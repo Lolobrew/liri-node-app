@@ -1,0 +1,25 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "For liri-node-app homework",
+  "main": "liri.js",
+  "dependencies": {
+    "node-spotify-api": "^1.0.5",
+    "twitter": "^1.7.1",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lolobrew/liri-node-app.git"
+  },
+  "author": "Jeff",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lolobrew/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/Lolobrew/liri-node-app#readme"
+}
