@@ -1,3 +1,7 @@
+//=================================================================================================================
+						//				variables set up
+//=================================================================================================================
+
 //intialize keys.js for spotify and twitter, packages: fs, request, spotify, twitter
 var keys = require("./keys");
 var Spotify = require('node-spotify-api');
@@ -39,36 +43,44 @@ for (var i = 3; i < args.length; i++) {
 var userInput = input.join(" ");
 
 console.log("User Input: " + userInput);
+
+
 //========================================================================================================================
+						//				functions set up
 //========================================================================================================================
 
-//spotify
-if(command == "spotify-this-song"){
+
+//spotify function
+var spotifyFunction = function(){
 	spotify.search ({ type: 'track', query: userInput, limit: 1}, function(err, data){
 		if (err) {
 			return console.log('Error occurred: ' + err);
+		} else {
+			console.log("Artist: " + JSON.stringify(data.tracks.items[0].artists[0].name, null, 2));
+			console.log("Album Name: " + JSON.stringify(data.tracks.items[0].album.name, null, 2));
+			console.log("Song Name: " + JSON.stringify(data.tracks.items[0].name, null, 2));
+			console.log("Preview Link: " + JSON.stringify(data.tracks.items[0].preview_url, null, 2));
 		}
-		console.log("Artist: " + JSON.stringify(data.tracks.items[0].artists[0].name, null, 2));
-		console.log("Album Name: " + JSON.stringify(data.tracks.items[0].album.name, null, 2));
-		console.log("Song Name: " + JSON.stringify(data.tracks.items[0].name, null, 2));
-		console.log("Preview Link: " + JSON.stringify(data.tracks.items[0].preview_url, null, 2));
 	});
+};
 
-//twitter
-} else if (command == "my-tweets"){
+
+//twitter function
+var twitterFunction = function(){
 	client.get('statuses/user_timeline', params, function(err, tweets, response ){
 		if (err){
 			return console.log('Error occurred: ' + JSON.stringify(err));
 		} else {
 			for (var i = 0; i < tweets.length; i++) {
-				console.log(JSON.stringify(tweets[i].created_at + " : " + tweets[i].text));
+				console.log("\n" + JSON.stringify(tweets[i].created_at + " : " + tweets[i].text));
 			}
 		}
 	});
+};
 
-//omdb movie
-} else if (command == "movie-this"){
 
+//omdb/request function
+var omdbFunction = function(){
 	//if user input is empty
 	if(userInput == ""){
 		request("http://www.omdbapi.com/?apikey=40e9cece&t=mr.nobody", function(err, response, body){
@@ -101,9 +113,11 @@ if(command == "spotify-this-song"){
 			console.log("Website: " + theMovie.Website);
 		});
 	}
+};
 
-//do-what-it-says to return spotify of random.txt
-} else if (command == "do-what-it-says"){
+
+//read file function/do-what-it-says
+var doItFunction = function(){
 	fs.readFile("random.txt", "utf8", function(error, data){
 		if (error){
 			return console.log("Error occured: " + error);
@@ -116,12 +130,41 @@ if(command == "spotify-this-song"){
 			spotify.search ({ type: 'track', query: userInput, limit: 1}, function(err, data){
 				if (err) {
 					return console.log('Error occurred: ' + err);
+				} else {
+					console.log("Artist: " + JSON.stringify(data.tracks.items[0].artists[0].name, null, 2));
+					console.log("Album Name: " + JSON.stringify(data.tracks.items[0].album.name, null, 2));
+					console.log("Song Name: " + JSON.stringify(data.tracks.items[0].name, null, 2));
+					console.log("Preview Link: " + JSON.stringify(data.tracks.items[0].preview_url, null, 2));
 				}
-				console.log("Artist: " + JSON.stringify(data.tracks.items[0].artists[0].name, null, 2));
-				console.log("Album Name: " + JSON.stringify(data.tracks.items[0].album.name, null, 2));
-				console.log("Song Name: " + JSON.stringify(data.tracks.items[0].name, null, 2));
-				console.log("Preview Link: " + JSON.stringify(data.tracks.items[0].preview_url, null, 2));
-				});
+			});
 		}
 	});
+}
+
+
+//========================================================================================================================
+							// 				if/else statement to run programs
+//========================================================================================================================
+
+
+//spotify
+if(command == "spotify-this-song"){
+	spotifyFunction();
+
+//twitter
+} else if (command == "my-tweets"){
+	twitterFunction();
+
+//omdb movie
+} else if (command == "movie-this"){
+	omdbFunction();
+
+//do-what-it-says to return spotify of random.txt
+} else if (command == "do-what-it-says"){
+	doItFunction();
+
+//default
+} else {
+	console.log("Please enter one of these commands: spotify-this-song, my-tweets, movie-this, or do-what-it-says")
+
 }
