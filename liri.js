@@ -59,7 +59,11 @@ var spotifyFunction = function(){
 			console.log("Artist: " + JSON.stringify(data.tracks.items[0].artists[0].name, null, 2));
 			console.log("Album Name: " + JSON.stringify(data.tracks.items[0].album.name, null, 2));
 			console.log("Song Name: " + JSON.stringify(data.tracks.items[0].name, null, 2));
-			console.log("Preview Link: " + JSON.stringify(data.tracks.items[0].preview_url, null, 2));
+			if (data.tracks.items[0].preview_url === null){
+				console.log("Preview Link: Sorry, there is not a preview link available for this song.");
+			} else {
+				console.log("Preview Link: " + JSON.stringify(data.tracks.items[0].preview_url, null, 2));
+			}
 		}
 	});
 };
